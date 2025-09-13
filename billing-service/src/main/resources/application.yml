@@ -3,19 +3,26 @@ server:
 spring:
   application:
     name: billing-service
-  kafka:
-    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
-    consumer:
-      group-id: billing-service
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
-      properties:
-        spring.json.trusted.packages: "*"
-    producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-      properties:
-        spring.json.add.type.headers: false
+  cloud:
+    function:
+      definition: flightReservedConsumer;hotelReservedConsumer;billingChargedSupplier;sagaCompletedSupplier
+    stream:
+      kafka:
+        binder:
+          brokers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+      bindings:
+        flightReservedConsumer-in-0:
+          destination: ${topics.flight-reserved:flight.reserved}
+          content-type: application/json
+        hotelReservedConsumer-in-0:
+          destination: ${topics.hotel-reserved:hotel.reserved}
+          content-type: application/json
+        billingChargedSupplier-out-0:
+          destination: ${topics.billing-charged:billing.charged}
+          content-type: application/json
+        sagaCompletedSupplier-out-0:
+          destination: ${topics.saga-completed:saga.completed}
+          content-type: application/json
 management:
   endpoints:
     web:
