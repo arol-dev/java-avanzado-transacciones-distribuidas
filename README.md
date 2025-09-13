@@ -71,10 +71,21 @@ elegido:
 - flight-service: http://localhost:8082
 - hotel-service: http://localhost:8083
 - billing-service: http://localhost:8084
+- Kafka UI: http://localhost:8085 (explorador web para Kafka)
 - Kafka (broker interno para servicios): kafka:9092 (expuesto en host: 9092)
 
 Todos los servicios reciben KAFKA_BOOTSTRAP_SERVERS=kafka:9092 desde
 docker-compose.yml.
+
+### Kafka UI
+
+- Interfaz web para explorar clústeres Kafka, tópicos, particiones, mensajes y
+  consumos.
+- URL local: http://localhost:8085
+- En docker-compose.yml está preconfigurado el cluster "local" apuntando a
+  kafka:9092.
+- No requiere credenciales en este entorno. Permite ver y depurar los eventos de
+  la SAGA.
 
 ## Endpoints principales
 
