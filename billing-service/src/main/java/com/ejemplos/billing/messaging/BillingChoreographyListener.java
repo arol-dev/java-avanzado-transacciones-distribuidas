@@ -5,6 +5,7 @@ import com.ejemplos.common.events.SagaEvent;
 import com.ejemplos.common.events.SagaEventType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -25,8 +26,8 @@ public class BillingChoreographyListener {
     private final Map<String, Boolean> flightOk = new HashMap<>();
     private final Map<String, Boolean> hotelOk = new HashMap<>();
 
-    public BillingChoreographyListener(BlockingQueue<SagaEvent> billingChargedQueue,
-                                       BlockingQueue<SagaEvent> sagaCompletedQueue) {
+    public BillingChoreographyListener(@Qualifier("billingChargedQueue") BlockingQueue<SagaEvent> billingChargedQueue,
+                                       @Qualifier("sagaCompletedQueue") BlockingQueue<SagaEvent> sagaCompletedQueue) {
         this.billingChargedQueue = billingChargedQueue;
         this.sagaCompletedQueue = sagaCompletedQueue;
     }
