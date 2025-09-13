@@ -1,0 +1,27 @@
+server:
+  port: 8083
+spring:
+  application:
+    name: hotel-service
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      group-id: hotel-service
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.add.type.headers: false
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+topics:
+  appointment-requested: appointments.requested
+  hotel-reserved: hotel.reserved
