@@ -1,6 +1,0 @@
-/Users/anyulled/IdeaProjects/transacciones-distribuidas/common/src/main/java/com/ejemplos/common/dto/AppointmentRequest.java
-/Users/anyulled/IdeaProjects/transacciones-distribuidas/common/src/main/java/com/ejemplos/common/dto/BillingCharge.java
-/Users/anyulled/IdeaProjects/transacciones-distribuidas/common/src/main/java/com/ejemplos/common/dto/FlightReservation.java
-/Users/anyulled/IdeaProjects/transacciones-distribuidas/common/src/main/java/com/ejemplos/common/dto/HotelReservation.java
-/Users/anyulled/IdeaProjects/transacciones-distribuidas/common/src/main/java/com/ejemplos/common/events/SagaEvent.java
-/Users/anyulled/IdeaProjects/transacciones-distribuidas/common/src/main/java/com/ejemplos/common/events/SagaEventType.java

@@ -1,4 +1,0 @@
-com/ejemplos/flight/FlightServiceApplication.class
-com/ejemplos/flight/api/FlightController.class
-com/ejemplos/flight/messaging/FlightChoreographyListener.class
-com/ejemplos/flight/config/KafkaConfig.class

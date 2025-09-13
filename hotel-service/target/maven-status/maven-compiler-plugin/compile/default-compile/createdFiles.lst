@@ -1,4 +1,0 @@
-com/ejemplos/hotel/config/KafkaConfig.class
-com/ejemplos/hotel/api/HotelController.class
-com/ejemplos/hotel/messaging/HotelChoreographyListener.class
-com/ejemplos/hotel/HotelServiceApplication.class
