@@ -22,7 +22,7 @@ public class AppointmentController {
 
     @PostMapping
     public ResponseEntity<?> create(@Validated @RequestBody AppointmentRequest request,
-                                    @RequestParam(defaultValue = "choreography") String mode) {
+                                    @RequestParam(name = "mode", defaultValue = "choreography") String mode) {
         String sagaId = service.startAppointment(request, mode);
         return ResponseEntity.accepted().body("Saga iniciada: " + sagaId + " (modo=" + mode + ")");
     }
