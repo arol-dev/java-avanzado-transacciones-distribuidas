@@ -1,6 +1,7 @@
 package com.ejemplos.billing.messaging;
 
 import com.ejemplos.common.events.SagaEvent;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -22,12 +23,12 @@ public class BillingStreamConfig {
     }
 
     @Bean
-    public Supplier<SagaEvent> billingChargedSupplier(BlockingQueue<SagaEvent> billingChargedQueue) {
+    public Supplier<SagaEvent> billingChargedSupplier(@Qualifier("billingChargedQueue") BlockingQueue<SagaEvent> billingChargedQueue) {
         return billingChargedQueue::poll;
     }
 
     @Bean
-    public Supplier<SagaEvent> sagaCompletedSupplier(BlockingQueue<SagaEvent> sagaCompletedQueue) {
+    public Supplier<SagaEvent> sagaCompletedSupplier(@Qualifier("sagaCompletedQueue") BlockingQueue<SagaEvent> sagaCompletedQueue) {
         return sagaCompletedQueue::poll;
     }
 }
