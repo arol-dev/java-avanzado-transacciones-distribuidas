@@ -161,8 +161,7 @@ añadirse con eventos de compensación.
 ```shell
   curl -X POST "http://localhost:8081/api/appointments?mode=choreography" \
   -H "Content-Type: application/json" \
-  -d '{"customerId":"c1","fromAirport":"MAD","toAirport":"CDG","flightDate":"
-  2025-12-20","hotelCity":"Paris","nights":2,"amountCents":10000}'
+  -d '{"customerId":"c1","fromAirport":"MAD","toAirport":"CDG","flightDate":"2025-12-20","hotelCity":"Paris","nights":2,"amountCents":10000}'
 ```
 
 - Iniciar orquestación:
@@ -170,8 +169,7 @@ añadirse con eventos de compensación.
 ```shell
 curl -X POST "http://localhost:8081/api/appointments?mode=orchestration" \
   -H "Content-Type: application/json" \
-  -d '{"customerId":"c1","fromAirport":"MAD","toAirport":"CDG","flightDate":"
-  2025-12-20","hotelCity":"Paris","nights":2,"amountCents":10000}'
+  -d '{"customerId":"c1","fromAirport":"MAD","toAirport":"CDG","flightDate":"2025-12-20","hotelCity":"Paris","nights":2,"amountCents":10000}'
 ```
 
 ## Solución de problemas
