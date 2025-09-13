@@ -1,0 +1,10 @@
+com/ejemplos/common/dto/AppointmentRequest$AppointmentRequestBuilder.class
+com/ejemplos/common/events/SagaEventType.class
+com/ejemplos/common/dto/AppointmentRequest.class
+com/ejemplos/common/dto/BillingCharge.class
+com/ejemplos/common/dto/BillingCharge$BillingChargeBuilder.class
+com/ejemplos/common/dto/HotelReservation$HotelReservationBuilder.class
+com/ejemplos/common/dto/HotelReservation.class
+com/ejemplos/common/dto/FlightReservation.class
+com/ejemplos/common/dto/FlightReservation$FlightReservationBuilder.class
+com/ejemplos/common/events/SagaEvent.class

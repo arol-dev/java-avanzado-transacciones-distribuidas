@@ -1,0 +1,13 @@
+package com.ejemplos.common.events;
+
+public enum SagaEventType {
+    APPOINTMENT_REQUESTED,
+    FLIGHT_RESERVED,
+    FLIGHT_COMPENSATED,
+    HOTEL_RESERVED,
+    HOTEL_COMPENSATED,
+    BILLING_CHARGED,
+    BILLING_REFUNDED,
+    SAGA_COMPLETED,
+    SAGA_FAILED
+}
