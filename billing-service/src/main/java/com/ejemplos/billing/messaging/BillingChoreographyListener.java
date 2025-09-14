@@ -37,7 +37,8 @@ public class BillingChoreographyListener {
         return event -> {
             if (event == null || event.type() != SagaEventType.FLIGHT_RESERVED)
                 return;
-            log.info("Vuelo reservado para sagaId={}", event.sagaId());
+            String reservationId = extract(event.payload(), "reservationId");
+            log.info("[Billing] Evento FLIGHT_RESERVED sagaId={} eventId={} reservationId={}", event.sagaId(), event.eventId(), reservationId);
             flightOk.put(event.sagaId(), true);
             tryComplete(event.sagaId());
         };
@@ -48,15 +49,19 @@ public class BillingChoreographyListener {
         return event -> {
             if (event == null || event.type() != SagaEventType.HOTEL_RESERVED)
                 return;
-            log.info("Hotel reservado para sagaId={}", event.sagaId());
+            String reservationId = extract(event.payload(), "reservationId");
+            log.info("[Billing] Evento HOTEL_RESERVED sagaId={} eventId={} reservationId={}", event.sagaId(), event.eventId(), reservationId);
             hotelOk.put(event.sagaId(), true);
             tryComplete(event.sagaId());
         };
     }
 
     private void tryComplete(String sagaId) {
-        if (Boolean.TRUE.equals(flightOk.get(sagaId)) && Boolean.TRUE.equals(hotelOk.get(sagaId))) {
-            log.info("Ambas reservas listas, cobrando sagaId={}", sagaId);
+        boolean f = Boolean.TRUE.equals(flightOk.get(sagaId));
+        boolean h = Boolean.TRUE.equals(hotelOk.get(sagaId));
+        log.info("[Billing] Estado actual sagaId={} flightOk={} hotelOk={}", sagaId, f, h);
+        if (f && h) {
+            log.info("[Billing] Ambas reservas listas, procediendo a cobro sagaId={}", sagaId);
             BillingCharge charge = new BillingCharge(
                     UUID.randomUUID().toString(),
                     "unknown",
@@ -65,10 +70,24 @@ public class BillingChoreographyListener {
                     null
             );
             SagaEvent billed = new SagaEvent(null, null, sagaId, SagaEventType.BILLING_CHARGED, charge);
-            billingChargedQueue.offer(billed);
+            boolean offered1 = billingChargedQueue.offer(billed);
+            log.info("[Billing] Encolado BILLING_CHARGED sagaId={} chargeId={} eventId={} offered={}", sagaId, charge.chargeId(), billed.eventId(), offered1);
 
             SagaEvent completed = new SagaEvent(null, null, sagaId, SagaEventType.SAGA_COMPLETED, null);
-            sagaCompletedQueue.offer(completed);
+            boolean offered2 = sagaCompletedQueue.offer(completed);
+            log.info("[Billing] Encolado SAGA_COMPLETED sagaId={} eventId={} offered={}", sagaId, completed.eventId(), offered2);
+        }
+    }
+
+    private String extract(Object payload, String key) {
+        if (payload instanceof Map<?, ?> m) {
+            Object val = m.get(key);
+            return val != null ? String.valueOf(val) : null;
+        }
+        try {
+            return (String) payload.getClass().getMethod(key).invoke(payload);
+        } catch (Exception ignored) {
+            return null;
         }
     }
 }

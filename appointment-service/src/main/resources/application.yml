@@ -22,6 +22,9 @@ management:
       exposure:
         include: "*"
 
+orchestrator:
+  url: ${ORCHESTRATOR_BASE_URL:http://saga-orchestrator:8080}
+
 # Temas por defecto
 topics:
   appointment-requested: appointments.requested

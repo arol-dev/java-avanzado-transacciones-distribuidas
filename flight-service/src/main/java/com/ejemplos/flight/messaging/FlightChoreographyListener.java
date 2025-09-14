@@ -25,7 +25,12 @@ public class FlightChoreographyListener {
         return event -> {
             if (event == null || event.type() != SagaEventType.APPOINTMENT_REQUESTED)
                 return null;
-            log.info("Recibida solicitud de cita sagaId={} -> reservando vuelo", event.sagaId());
+            log.info("[Flight] Evento recibido type={} eventId={} sagaId={} -> reservando vuelo {}->{}, fecha={} cliente={}",
+                    event.type(), event.eventId(), event.sagaId(),
+                    toAppointmentRequest(event.payload()).fromAirport(),
+                    toAppointmentRequest(event.payload()).toAirport(),
+                    toAppointmentRequest(event.payload()).flightDate(),
+                    toAppointmentRequest(event.payload()).customerId());
             AppointmentRequest req = toAppointmentRequest(event.payload());
             FlightReservation fr = new FlightReservation(
                     UUID.randomUUID().toString(),
@@ -35,7 +40,10 @@ public class FlightChoreographyListener {
                     true,
                     null
             );
-            return new SagaEvent(null, null, event.sagaId(), SagaEventType.FLIGHT_RESERVED, fr);
+            SagaEvent out = new SagaEvent(null, null, event.sagaId(), SagaEventType.FLIGHT_RESERVED, fr);
+            log.info("[Flight] Publicando FLIGHT_RESERVED sagaId={} reservationId={} from={} to={} date={} eventId={}",
+                    out.sagaId(), fr.reservationId(), fr.fromAirport(), fr.toAirport(), fr.date(), out.eventId());
+            return out;
         };
     }
 

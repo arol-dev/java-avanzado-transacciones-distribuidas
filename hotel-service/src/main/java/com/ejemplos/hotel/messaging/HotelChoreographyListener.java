@@ -25,16 +25,20 @@ public class HotelChoreographyListener {
         return event -> {
             if (event == null || event.type() != SagaEventType.APPOINTMENT_REQUESTED)
                 return null;
-            log.info("Recibida solicitud de cita sagaId={} -> reservando hotel", event.sagaId());
-            AppointmentRequest req = toAppointmentRequest(event.payload());
+            AppointmentRequest ar = toAppointmentRequest(event.payload());
+            log.info("[Hotel] Evento recibido type={} eventId={} sagaId={} -> reservando hotel en {} por {} noches cliente={}",
+                    event.type(), event.eventId(), event.sagaId(), ar.hotelCity(), ar.nights(), ar.customerId());
             HotelReservation hr = new HotelReservation(
                     UUID.randomUUID().toString(),
-                    req.hotelCity(),
-                    req.nights(),
+                    ar.hotelCity(),
+                    ar.nights(),
                     true,
                     null
             );
-            return new SagaEvent(null, null, event.sagaId(), SagaEventType.HOTEL_RESERVED, hr);
+            SagaEvent out = new SagaEvent(null, null, event.sagaId(), SagaEventType.HOTEL_RESERVED, hr);
+            log.info("[Hotel] Publicando HOTEL_RESERVED sagaId={} reservationId={} city={} nights={} eventId={}",
+                    out.sagaId(), hr.reservationId(), hr.city(), hr.nights(), out.eventId());
+            return out;
         };
     }
 

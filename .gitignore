@@ -1,0 +1,7 @@
+.idea/
+appointment-service/target
+billing-service/target
+common/target
+flight-service/target
+hotel-service/target
+saga-orchestrator/target
