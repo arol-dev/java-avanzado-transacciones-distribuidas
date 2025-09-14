@@ -1,0 +1,14 @@
+server:
+  port: 8080
+
+# URLs base de los servicios destino para orquestación (sobrescribibles por variables de entorno)
+services:
+  flight: ${FLIGHT_BASE_URL:http://flight-service:8082}
+  hotel: ${HOTEL_BASE_URL:http://hotel-service:8083}
+  billing: ${BILLING_BASE_URL:http://billing-service:8084}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

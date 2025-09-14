@@ -154,6 +154,38 @@ añadirse con eventos de compensación.
 2) El orquestador llama secuencialmente a flight, hotel, billing
 3) Si falla algún paso, intenta compensar (refund/cancel)
 
+## Prueba asíncrona (simulada con colas/temas)
+
+Para probar el flujo asíncrono por coreografía usando colas/temas y sin tener
+que inspeccionar Kafka manualmente, billing-service expone un endpoint que
+permite ver rápidamente los eventos que publica cuando detecta que vuelo y hotel
+han sido reservados.
+
+Pasos:
+
+1) Inicia el entorno con Docker Compose (Kafka + servicios) como se detalla
+   arriba.
+2) Crea una cita en modo coreografía:
+
+```shell
+curl -X POST "http://localhost:8081/api/appointments?mode=choreography" \
+  -H "Content-Type: application/json" \
+  -d '{"customerId":"c1","fromAirport":"MAD","toAirport":"CDG","flightDate":"2025-12-20","hotelCity":"Paris","nights":2,"amountCents":10000}'
+```
+
+3) Al cabo de unos instantes, consulta los eventos que billing-service ha
+   preparado para publicar en los tópicos billing.charged y saga.completed:
+
+```shell
+curl "http://localhost:8084/api/billing/events?max=10"
+```
+
+- Respuesta: JSON con listas billingCharged y sagaCompleted. Ten en cuenta que
+  estos eventos también son publicados a Kafka de forma periódica (poller de
+  Spring Cloud Stream). Si el publicador ya los envió, el endpoint puede
+  devolver listas vacías en esa invocación.
+- Alternativamente, revisa los tópicos en Kafka UI.
+
 ## Validación rápida
 
 - Iniciar coreografía:
